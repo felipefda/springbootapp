@@ -1,0 +1,36 @@
+plugins {
+	id 'org.springframework.boot' version '2.1.7.RELEASE'
+	id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'org.felipe'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	runtimeOnly 'mysql:mysql-connector-java'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+def developmentDbUrl = "jdbc:mysql://localhost:3306/springboot?user=root&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false"
+bootRun.environment([
+		"SPRING_DATASOURCE_URL": developmentDbUrl,
+		"MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE": "*",
+		"MANAGEMENT_ENDPOINT_HEALTH_SHOWDETAILS": "always",
+])
+
+def testDbUrl = "jdbc:mysql://localhost:3306/springboot_test?user=root&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false"
+test.environment([
+		"SPRING_DATASOURCE_URL": testDbUrl,
+		"MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE": "*",
+		"MANAGEMENT_ENDPOINT_HEALTH_SHOWDETAILS": "always",
+])
